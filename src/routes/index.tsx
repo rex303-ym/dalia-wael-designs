@@ -22,8 +22,6 @@ import {
   Languages,
 } from "lucide-react";
 import heroJewelry from "@/assets/hero-jewelry.jpg";
-import handSketches from "@/assets/hand-sketches.jpg";
-import finalProducts from "@/assets/final-products.jpg";
 import aboutPortrait from "@/assets/about-portrait.jpg";
 
 export const Route = createFileRoute("/")({
