@@ -22,8 +22,6 @@ import {
   Languages,
 } from "lucide-react";
 import heroJewelry from "@/assets/hero-jewelry.jpg";
-import handSketches from "@/assets/hand-sketches.jpg";
-import finalProducts from "@/assets/final-products.jpg";
 import aboutPortrait from "@/assets/about-portrait.jpg";
 
 export const Route = createFileRoute("/")({
@@ -80,7 +78,7 @@ function Section({
     <section
       id={id}
       ref={ref}
-      className={`scroll-mt-24 py-20 md:py-28 transition-all duration-1000 ${shown ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+      className={`scroll-mt-24 py-20 md:py-28 transition-all duration-500 ease-out ${shown ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"}`}
     >
       <div className="mx-auto max-w-6xl px-6">
         <div className="mb-12 text-center">
@@ -104,14 +102,13 @@ function Section({
 function PlaceholderCard({ label, icon: Icon }: { label: string; icon: typeof Gem }) {
   return (
     <div className="group relative aspect-square overflow-hidden rounded-lg card-gold bg-card hover:[&]:card-gold-hover">
-      <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-gradient-to-br from-[color:var(--sand)] to-[color:var(--cream)] transition-transform duration-500 group-hover:scale-105">
-        <Icon className="h-10 w-10 text-gold" strokeWidth={1.2} />
-        <p className="px-4 text-center text-sm font-medium tracking-wide text-foreground/70">
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-gradient-to-br from-[color:var(--sand)] to-[color:var(--cream)]">
+        <Icon className="h-10 w-10 text-gold/70" strokeWidth={1.2} />
+        <p className="px-4 text-center text-sm font-medium tracking-wide text-foreground/60">
           {label}
         </p>
-        <p className="text-[10px] uppercase tracking-[0.3em] text-gold/70">Add image</p>
+        <p className="text-[10px] uppercase tracking-[0.3em] text-gold/60">Add image</p>
       </div>
-      <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 [background:radial-gradient(circle_at_center,color-mix(in_oklab,var(--gold)_18%,transparent),transparent_70%)]" />
     </div>
   );
 }
@@ -266,7 +263,7 @@ function About() {
     <section
       id="about"
       ref={ref}
-      className={`scroll-mt-24 py-20 md:py-28 bg-[color:var(--sand)]/50 transition-all duration-1000 ${shown ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+      className={`scroll-mt-24 py-20 md:py-28 bg-[color:var(--sand)]/50 transition-all duration-500 ease-out ${shown ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"}`}
     >
       <div className="mx-auto max-w-6xl px-6 grid md:grid-cols-5 gap-12 items-center">
         <div className="md:col-span-2 relative">
@@ -339,12 +336,10 @@ function InfoRow({
 function ExploreCard({
   title,
   desc,
-  img,
   icon: Icon,
 }: {
   title: string;
   desc: string;
-  img: string;
   icon: typeof Gem;
 }) {
   return (
@@ -352,26 +347,22 @@ function ExploreCard({
       href="#gallery"
       className="group relative block overflow-hidden rounded-lg card-gold bg-card hover:[&]:card-gold-hover"
     >
-      <div className="aspect-[4/3] overflow-hidden">
-        <img
-          src={img}
-          alt={title}
-          loading="lazy"
-          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-          width={1200}
-          height={900}
-        />
+      <div className="aspect-[4/3] flex items-center justify-center bg-gradient-to-br from-[color:var(--sand)] to-[color:var(--cream)] border-b border-[color:var(--gold)]/30">
+        <div className="flex flex-col items-center gap-2 text-gold/70">
+          <Icon className="h-10 w-10" strokeWidth={1.2} />
+          <p className="text-[10px] uppercase tracking-[0.3em]">Add image</p>
+        </div>
       </div>
       <div className="p-6 md:p-8">
         <div className="mb-3 inline-flex h-12 w-12 items-center justify-center rounded-full bg-gradient-gold text-[color:var(--ink)]">
           <Icon className="h-5 w-5" strokeWidth={1.5} />
         </div>
-        <h3 className="font-display text-2xl font-semibold text-foreground group-hover:text-gold transition-colors">
+        <h3 className="font-display text-2xl font-semibold text-foreground group-hover:text-gold transition-colors duration-200">
           {title}
         </h3>
         <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{desc}</p>
         <span className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-gold">
-          Explore <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+          Explore <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
         </span>
       </div>
     </a>
@@ -569,13 +560,11 @@ function Portfolio() {
             <ExploreCard
               title="Hand Sketches & Manual Design"
               desc="Original pencil sketches, ideation, and manual craftsmanship — the origin of every piece."
-              img={handSketches}
               icon={PenTool}
             />
             <ExploreCard
               title="Final Products & Photography"
               desc="Finished jewelry pieces captured in professional product photography."
-              img={finalProducts}
               icon={Camera}
             />
           </div>
