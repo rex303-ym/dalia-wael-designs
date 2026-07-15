@@ -88,14 +88,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         property: "og:description",
         content:
-          "Luxury jewelry and metal product design portfolio by Dalia Wael, Faculty of Applied Arts.",
+          "Portfolio of Dalia Wael — jewelry and metal products designer specializing in Rhino Gold, Art CAM, SolidWorks, and 3D Max.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Dalia Wael | Jewelry & Metal Design Portfolio" },
+      { name: "twitter:description", content: "Portfolio of Dalia Wael — jewelry and metal products designer specializing in Rhino Gold, Art CAM, SolidWorks, and 3D Max." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/76904af8-177d-46b9-bc4c-7e28c059a715/id-preview-61edc706--021eac10-e246-4561-a18a-71da79cf42c6.lovable.app-1784149873961.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/76904af8-177d-46b9-bc4c-7e28c059a715/id-preview-61edc706--021eac10-e246-4561-a18a-71da79cf42c6.lovable.app-1784149873961.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
