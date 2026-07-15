@@ -263,7 +263,7 @@ function About() {
     <section
       id="about"
       ref={ref}
-      className={`scroll-mt-24 py-20 md:py-28 bg-[color:var(--sand)]/50 transition-all duration-1000 ${shown ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+      className={`scroll-mt-24 py-20 md:py-28 bg-[color:var(--sand)]/50 transition-all duration-500 ease-out ${shown ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"}`}
     >
       <div className="mx-auto max-w-6xl px-6 grid md:grid-cols-5 gap-12 items-center">
         <div className="md:col-span-2 relative">

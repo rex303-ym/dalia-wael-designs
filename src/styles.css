@@ -117,12 +117,20 @@
 
 @utility card-gold {
   border: 1px solid color-mix(in oklab, var(--gold) 40%, transparent);
-  transition: transform 400ms ease, box-shadow 400ms ease, border-color 400ms ease;
+  transition: transform 200ms ease-out, box-shadow 200ms ease-out, border-color 200ms ease-out;
 }
 @utility card-gold-hover {
   border-color: var(--gold-deep);
-  box-shadow: 0 15px 40px -15px color-mix(in oklab, var(--gold) 55%, transparent);
-  transform: translateY(-4px);
+  box-shadow: 0 8px 20px -10px color-mix(in oklab, var(--gold) 45%, transparent);
+  transform: translateY(-2px);
+}
+
+@keyframes reveal-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@utility reveal {
+  animation: reveal-up 400ms ease-out both;
 }
 
 @keyframes reveal-up {
