@@ -740,7 +740,7 @@ function Portfolio() {
           id="solidworks"
           eyebrow="Software"
           title="SolidWorks"
-          description="3D modeling and technical design of jewelry pieces and metal components."
+          description="3D modeling and technical design of metal products and components."
         >
           <GalleryGrid prefix="SolidWorks" icon={Box} images={SOLIDWORKS_IMAGES} />
         </Section>
