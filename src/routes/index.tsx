@@ -613,14 +613,18 @@ function Contact() {
           </ContactLine>
           <div className="pt-4 flex gap-3">
             <a
-              href="#"
-              aria-label="LinkedIn"
+              href="https://www.facebook.com/dalia.wael.9843"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Facebook"
               className="grid h-11 w-11 place-items-center rounded-full border border-[color:var(--gold)] text-gold hover:bg-gradient-gold hover:text-[color:var(--ink)] transition-all"
             >
-              <Linkedin className="h-5 w-5" strokeWidth={1.5} />
+              <Facebook className="h-5 w-5" strokeWidth={1.5} />
             </a>
             <a
-              href="#"
+              href="https://www.instagram.com/dalia_wael_3/?hl=en"
+              target="_blank"
+              rel="noopener noreferrer"
               aria-label="Instagram"
               className="grid h-11 w-11 place-items-center rounded-full border border-[color:var(--gold)] text-gold hover:bg-gradient-gold hover:text-[color:var(--ink)] transition-all"
             >
