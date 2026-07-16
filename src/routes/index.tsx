@@ -20,9 +20,21 @@ import {
   Award,
   GraduationCap,
   Languages,
+  X,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import heroJewelry from "@/assets/hero-jewelry.jpg";
-import aboutPortrait from "@/assets/about-portrait.jpg";
+import heroMonogram from "@/assets/hero-monogram.png.asset.json";
+import aboutDalia from "@/assets/about-dalia.jpg.asset.json";
+import sw1 from "@/assets/sw-1.jpg.asset.json";
+import sw2 from "@/assets/sw-2.jpg.asset.json";
+import sw3 from "@/assets/sw-3.jpg.asset.json";
+import sw4 from "@/assets/sw-4.jpg.asset.json";
+import sw5 from "@/assets/sw-5.jpg.asset.json";
+import sw6 from "@/assets/sw-6.jpg.asset.json";
+import sw7 from "@/assets/sw-7.jpg.asset.json";
+import sw8 from "@/assets/sw-8.jpg.asset.json";
 
 export const Route = createFileRoute("/")({
   component: Portfolio,
@@ -34,10 +46,13 @@ const NAV = [
   { href: "#artcam", label: "Art CAM" },
   { href: "#solidworks", label: "SolidWorks" },
   { href: "#3dmax", label: "3D Max" },
+  { href: "#photoshop", label: "Photoshop" },
   { href: "#rhino", label: "Rhino & Rhino Gold" },
   { href: "#gallery", label: "Gallery" },
   { href: "#contact", label: "Contact" },
 ];
+
+const SOLIDWORKS_IMAGES = [sw1.url, sw2.url, sw3.url, sw4.url, sw5.url, sw6.url, sw7.url, sw8.url];
 
 function useReveal<T extends HTMLElement>() {
   const ref = useRef<T | null>(null);
@@ -58,6 +73,101 @@ function useReveal<T extends HTMLElement>() {
     return () => io.disconnect();
   }, []);
   return { ref, shown };
+}
+
+function Lightbox({
+  images,
+  index,
+  onClose,
+  onPrev,
+  onNext,
+}: {
+  images: string[];
+  index: number;
+  onClose: () => void;
+  onPrev: () => void;
+  onNext: () => void;
+}) {
+  const touchStart = useRef<{ x: number; y: number } | null>(null);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+      else if (e.key === "ArrowLeft") onPrev();
+      else if (e.key === "ArrowRight") onNext();
+    };
+    window.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [onClose, onPrev, onNext]);
+
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      onClick={onClose}
+      onTouchStart={(e) => {
+        const t = e.touches[0];
+        touchStart.current = { x: t.clientX, y: t.clientY };
+      }}
+      onTouchEnd={(e) => {
+        if (!touchStart.current) return;
+        const t = e.changedTouches[0];
+        const dx = t.clientX - touchStart.current.x;
+        const dy = t.clientY - touchStart.current.y;
+        if (Math.abs(dy) > 80 && Math.abs(dy) > Math.abs(dx)) onClose();
+        else if (Math.abs(dx) > 60) (dx > 0 ? onPrev : onNext)();
+        touchStart.current = null;
+      }}
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 backdrop-blur-sm animate-[lb-fade_180ms_ease-out]"
+    >
+      <button
+        aria-label="Close"
+        onClick={(e) => {
+          e.stopPropagation();
+          onClose();
+        }}
+        className="absolute top-5 right-5 z-10 grid h-11 w-11 place-items-center rounded-full border border-[color:var(--gold)] text-gold hover:bg-[color:var(--gold)]/20 transition-colors"
+      >
+        <X className="h-5 w-5" />
+      </button>
+      {images.length > 1 && (
+        <>
+          <button
+            aria-label="Previous"
+            onClick={(e) => {
+              e.stopPropagation();
+              onPrev();
+            }}
+            className="absolute left-4 md:left-8 grid h-12 w-12 place-items-center rounded-full border border-[color:var(--gold)] text-gold hover:bg-[color:var(--gold)]/20 transition-colors"
+          >
+            <ChevronLeft className="h-6 w-6" />
+          </button>
+          <button
+            aria-label="Next"
+            onClick={(e) => {
+              e.stopPropagation();
+              onNext();
+            }}
+            className="absolute right-4 md:right-8 grid h-12 w-12 place-items-center rounded-full border border-[color:var(--gold)] text-gold hover:bg-[color:var(--gold)]/20 transition-colors"
+          >
+            <ChevronRight className="h-6 w-6" />
+          </button>
+        </>
+      )}
+      <img
+        key={index}
+        src={images[index]}
+        alt=""
+        onClick={(e) => e.stopPropagation()}
+        className="max-h-[88vh] max-w-[92vw] object-contain rounded-md shadow-luxe animate-[lb-zoom_200ms_ease-out]"
+      />
+    </div>
+  );
 }
 
 function Section({
@@ -99,9 +209,9 @@ function Section({
   );
 }
 
-function PlaceholderCard({ label, icon: Icon }: { label: string; icon: typeof Gem }) {
+function EmptySlot({ label, icon: Icon }: { label: string; icon: typeof Gem }) {
   return (
-    <div className="group relative aspect-square overflow-hidden rounded-lg card-gold bg-card hover:[&]:card-gold-hover">
+    <div className="relative aspect-square overflow-hidden rounded-lg card-gold bg-card">
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-gradient-to-br from-[color:var(--sand)] to-[color:var(--cream)]">
         <Icon className="h-10 w-10 text-gold/70" strokeWidth={1.2} />
         <p className="px-4 text-center text-sm font-medium tracking-wide text-foreground/60">
@@ -113,13 +223,62 @@ function PlaceholderCard({ label, icon: Icon }: { label: string; icon: typeof Ge
   );
 }
 
-function GalleryGrid({ prefix, icon }: { prefix: string; icon: typeof Gem }) {
+function ImageCard({ src, alt, onClick }: { src: string; alt: string; onClick: () => void }) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-      {Array.from({ length: 6 }).map((_, i) => (
-        <PlaceholderCard key={i} label={`${prefix} · Piece ${i + 1}`} icon={icon} />
-      ))}
-    </div>
+    <button
+      type="button"
+      onClick={onClick}
+      className="group relative aspect-square overflow-hidden rounded-lg card-gold bg-card hover:[&]:card-gold-hover cursor-zoom-in"
+    >
+      <img
+        src={src}
+        alt={alt}
+        loading="lazy"
+        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+      />
+    </button>
+  );
+}
+
+function GalleryGrid({
+  prefix,
+  icon,
+  images = [],
+  slots = 6,
+}: {
+  prefix: string;
+  icon: typeof Gem;
+  images?: string[];
+  slots?: number;
+}) {
+  const [open, setOpen] = useState<number | null>(null);
+  const total = Math.max(slots, images.length);
+  return (
+    <>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {Array.from({ length: total }).map((_, i) =>
+          images[i] ? (
+            <ImageCard
+              key={i}
+              src={images[i]}
+              alt={`${prefix} · Piece ${i + 1}`}
+              onClick={() => setOpen(i)}
+            />
+          ) : (
+            <EmptySlot key={i} label={`${prefix} · Piece ${i + 1}`} icon={icon} />
+          ),
+        )}
+      </div>
+      {open !== null && images.length > 0 && (
+        <Lightbox
+          images={images}
+          index={open}
+          onClose={() => setOpen(null)}
+          onPrev={() => setOpen((v) => (v === null ? 0 : (v - 1 + images.length) % images.length))}
+          onNext={() => setOpen((v) => (v === null ? 0 : (v + 1) % images.length))}
+        />
+      )}
+    </>
   );
 }
 
@@ -141,10 +300,7 @@ function Navbar() {
       }`}
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-        <a
-          href="#home"
-          className="font-display text-2xl font-semibold tracking-wide text-gold"
-        >
+        <a href="#home" className="font-display text-2xl font-semibold tracking-wide text-gold">
           Dalia&nbsp;Wael
         </a>
         <ul className="hidden lg:flex items-center gap-7">
@@ -200,7 +356,7 @@ function Hero() {
     >
       <div className="absolute inset-0 opacity-25">
         <img
-          src={heroJewelry}
+          src={heroMonogram.url}
           alt=""
           className="h-full w-full object-cover"
           width={1920}
@@ -269,8 +425,8 @@ function About() {
         <div className="md:col-span-2 relative">
           <div className="aspect-[4/5] overflow-hidden rounded-lg border-2 border-[color:var(--gold)]/50 shadow-luxe">
             <img
-              src={aboutPortrait}
-              alt="Dalia Wael's work"
+              src={aboutDalia.url}
+              alt="Dalia Wael"
               loading="lazy"
               className="h-full w-full object-cover"
               width={900}
@@ -333,39 +489,71 @@ function InfoRow({
   );
 }
 
-function ExploreCard({
-  title,
-  desc,
-  icon: Icon,
-}: {
-  title: string;
-  desc: string;
-  icon: typeof Gem;
-}) {
+function ExploreSection() {
+  const [open, setOpen] = useState<number | null>(null);
+  const images: string[] = []; // no images yet
+  const cards = [
+    {
+      title: "Hand Sketches & Manual Design",
+      desc: "Original pencil sketches, ideation, and manual craftsmanship — the origin of every piece.",
+      icon: PenTool,
+    },
+    {
+      title: "Final Products & Photography",
+      desc: "Finished jewelry pieces captured in professional product photography.",
+      icon: Camera,
+    },
+  ];
   return (
-    <a
-      href="#gallery"
-      className="group relative block overflow-hidden rounded-lg card-gold bg-card hover:[&]:card-gold-hover"
+    <Section
+      id="gallery"
+      eyebrow="Explore More"
+      title="Beyond the Screen"
+      description="Where craft meets concept — hand-drawn ideation and the finished, photographed pieces."
     >
-      <div className="aspect-[4/3] flex items-center justify-center bg-gradient-to-br from-[color:var(--sand)] to-[color:var(--cream)] border-b border-[color:var(--gold)]/30">
-        <div className="flex flex-col items-center gap-2 text-gold/70">
-          <Icon className="h-10 w-10" strokeWidth={1.2} />
-          <p className="text-[10px] uppercase tracking-[0.3em]">Add image</p>
-        </div>
+      <div className="grid md:grid-cols-2 gap-8">
+        {cards.map((c, i) => {
+          const Icon = c.icon;
+          const hasImg = Boolean(images[i]);
+          return (
+            <div
+              key={c.title}
+              onClick={hasImg ? () => setOpen(i) : undefined}
+              className={`group relative block overflow-hidden rounded-lg card-gold bg-card hover:[&]:card-gold-hover ${hasImg ? "cursor-zoom-in" : ""}`}
+            >
+              <div className="aspect-[4/3] flex items-center justify-center bg-gradient-to-br from-[color:var(--sand)] to-[color:var(--cream)] border-b border-[color:var(--gold)]/30">
+                {hasImg ? (
+                  <img src={images[i]} alt={c.title} className="h-full w-full object-cover" />
+                ) : (
+                  <div className="flex flex-col items-center gap-2 text-gold/70">
+                    <Icon className="h-10 w-10" strokeWidth={1.2} />
+                    <p className="text-[10px] uppercase tracking-[0.3em]">Add image</p>
+                  </div>
+                )}
+              </div>
+              <div className="p-6 md:p-8">
+                <div className="mb-3 inline-flex h-12 w-12 items-center justify-center rounded-full bg-gradient-gold text-[color:var(--ink)]">
+                  <Icon className="h-5 w-5" strokeWidth={1.5} />
+                </div>
+                <h3 className="font-display text-2xl font-semibold text-foreground group-hover:text-gold transition-colors duration-200">
+                  {c.title}
+                </h3>
+                <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{c.desc}</p>
+              </div>
+            </div>
+          );
+        })}
       </div>
-      <div className="p-6 md:p-8">
-        <div className="mb-3 inline-flex h-12 w-12 items-center justify-center rounded-full bg-gradient-gold text-[color:var(--ink)]">
-          <Icon className="h-5 w-5" strokeWidth={1.5} />
-        </div>
-        <h3 className="font-display text-2xl font-semibold text-foreground group-hover:text-gold transition-colors duration-200">
-          {title}
-        </h3>
-        <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{desc}</p>
-        <span className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-gold">
-          Explore <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
-        </span>
-      </div>
-    </a>
+      {open !== null && images.length > 0 && (
+        <Lightbox
+          images={images}
+          index={open}
+          onClose={() => setOpen(null)}
+          onPrev={() => setOpen((v) => (v === null ? 0 : (v - 1 + images.length) % images.length))}
+          onNext={() => setOpen((v) => (v === null ? 0 : (v + 1) % images.length))}
+        />
+      )}
+    </Section>
   );
 }
 
@@ -379,12 +567,24 @@ const SKILLS = [
 ];
 
 function Contact() {
-  const [sent, setSent] = useState(false);
+  const [fallback, setFallback] = useState(false);
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSent(true);
-    setTimeout(() => setSent(false), 4000);
-    (e.currentTarget as HTMLFormElement).reset();
+    const fd = new FormData(e.currentTarget);
+    const name = String(fd.get("name") || "").trim();
+    const email = String(fd.get("email") || "").trim();
+    const message = String(fd.get("message") || "").trim();
+    const subject = `Portfolio Contact - ${name}`;
+    const body = `From: ${email}\n\n${message}`;
+    const href = `mailto:daliaafifi70@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const start = Date.now();
+    window.location.href = href;
+    // Show fallback if no mail handler took over within ~1.2s
+    window.setTimeout(() => {
+      if (Date.now() - start < 3000 && document.visibilityState === "visible") {
+        setFallback(true);
+      }
+    }, 1200);
   };
   return (
     <Section
@@ -429,10 +629,7 @@ function Contact() {
           </div>
         </div>
 
-        <form
-          onSubmit={onSubmit}
-          className="rounded-lg card-gold bg-card p-6 md:p-8 space-y-5"
-        >
+        <form onSubmit={onSubmit} className="rounded-lg card-gold bg-card p-6 md:p-8 space-y-5">
           <Field label="Name" name="name" type="text" placeholder="Your full name" />
           <Field label="Email" name="email" type="email" placeholder="you@example.com" />
           <div>
@@ -451,8 +648,20 @@ function Contact() {
             type="submit"
             className="w-full rounded-full bg-gradient-gold px-6 py-3.5 text-sm font-semibold uppercase tracking-widest text-[color:var(--ink)] shadow-luxe transition-transform hover:scale-[1.02]"
           >
-            {sent ? "Message Sent ✓" : "Send Message"}
+            Send Message
           </button>
+          {fallback && (
+            <p className="text-xs text-muted-foreground text-center">
+              No email app detected. Please email{" "}
+              <a
+                href="mailto:daliaafifi70@gmail.com"
+                className="text-gold hover:underline break-all"
+              >
+                daliaafifi70@gmail.com
+              </a>{" "}
+              directly.
+            </p>
+          )}
         </form>
       </div>
     </Section>
@@ -529,7 +738,7 @@ function Portfolio() {
           title="SolidWorks"
           description="3D modeling and technical design of jewelry pieces and metal components."
         >
-          <GalleryGrid prefix="SolidWorks" icon={Box} />
+          <GalleryGrid prefix="SolidWorks" icon={Box} images={SOLIDWORKS_IMAGES} />
         </Section>
 
         <Section
@@ -542,6 +751,15 @@ function Portfolio() {
         </Section>
 
         <Section
+          id="photoshop"
+          eyebrow="Software"
+          title="Photoshop"
+          description="Digital editing, retouching, and creative visualization of jewelry designs using Adobe Photoshop."
+        >
+          <GalleryGrid prefix="Photoshop" icon={Palette} />
+        </Section>
+
+        <Section
           id="rhino"
           eyebrow="Software"
           title="Rhino & Rhino Gold"
@@ -550,25 +768,7 @@ function Portfolio() {
           <GalleryGrid prefix="Rhino" icon={Diamond} />
         </Section>
 
-        <Section
-          id="gallery"
-          eyebrow="Explore More"
-          title="Beyond the Screen"
-          description="Where craft meets concept — hand-drawn ideation and the finished, photographed pieces."
-        >
-          <div className="grid md:grid-cols-2 gap-8">
-            <ExploreCard
-              title="Hand Sketches & Manual Design"
-              desc="Original pencil sketches, ideation, and manual craftsmanship — the origin of every piece."
-              icon={PenTool}
-            />
-            <ExploreCard
-              title="Final Products & Photography"
-              desc="Finished jewelry pieces captured in professional product photography."
-              icon={Camera}
-            />
-          </div>
-        </Section>
+        <ExploreSection />
 
         <Section
           id="skills"
