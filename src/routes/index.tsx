@@ -12,7 +12,7 @@ import {
   MapPin,
   Phone,
   Mail,
-  Linkedin,
+  Facebook,
   Instagram,
   ArrowRight,
   PenTool,
@@ -366,7 +366,7 @@ function Hero() {
       <div className="absolute inset-0 bg-gradient-to-r from-[color:var(--cream)] via-[color:var(--cream)]/70 to-transparent" />
       <div className="relative mx-auto max-w-6xl px-6 py-20 grid md:grid-cols-2 gap-10 items-center w-full">
         <div className="reveal">
-          <p className="mb-4 text-xs uppercase tracking-[0.4em] text-gold">Portfolio · 2025</p>
+          <p className="mb-4 text-xs uppercase tracking-[0.4em] text-gold">Portfolio · 2026</p>
           <h1 className="font-display text-6xl md:text-7xl lg:text-8xl font-semibold text-gold leading-[0.95]">
             Dalia
             <br />
@@ -374,7 +374,7 @@ function Hero() {
           </h1>
           <hr className="gold-divider my-8" />
           <p className="text-lg md:text-xl text-foreground/85 font-medium">
-            Metal Products &amp; Jewelry Designer Student
+            Metal Products &amp; Jewelry Designer
           </p>
           <p className="mt-4 max-w-lg text-base text-muted-foreground leading-relaxed">
             Passionate about continuous learning and professional development in jewelry &amp;
@@ -613,14 +613,18 @@ function Contact() {
           </ContactLine>
           <div className="pt-4 flex gap-3">
             <a
-              href="#"
-              aria-label="LinkedIn"
+              href="https://www.facebook.com/dalia.wael.9843"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Facebook"
               className="grid h-11 w-11 place-items-center rounded-full border border-[color:var(--gold)] text-gold hover:bg-gradient-gold hover:text-[color:var(--ink)] transition-all"
             >
-              <Linkedin className="h-5 w-5" strokeWidth={1.5} />
+              <Facebook className="h-5 w-5" strokeWidth={1.5} />
             </a>
             <a
-              href="#"
+              href="https://www.instagram.com/dalia_wael_3/?hl=en"
+              target="_blank"
+              rel="noopener noreferrer"
               aria-label="Instagram"
               className="grid h-11 w-11 place-items-center rounded-full border border-[color:var(--gold)] text-gold hover:bg-gradient-gold hover:text-[color:var(--ink)] transition-all"
             >
@@ -736,7 +740,7 @@ function Portfolio() {
           id="solidworks"
           eyebrow="Software"
           title="SolidWorks"
-          description="3D modeling and technical design of jewelry pieces and metal components."
+          description="3D modeling and technical design of metal products and components."
         >
           <GalleryGrid prefix="SolidWorks" icon={Box} images={SOLIDWORKS_IMAGES} />
         </Section>
@@ -745,7 +749,7 @@ function Portfolio() {
           id="3dmax"
           eyebrow="Software"
           title="3D Max"
-          description="Photorealistic 3D rendering and visualization of jewelry concepts."
+          description="Photorealistic 3D rendering and visualization of jewelry and metal design concepts."
         >
           <GalleryGrid prefix="3D Max" icon={Layers} />
         </Section>
@@ -754,7 +758,7 @@ function Portfolio() {
           id="photoshop"
           eyebrow="Software"
           title="Photoshop"
-          description="Digital editing, retouching, and creative visualization of jewelry designs using Adobe Photoshop."
+          description="Digital editing, retouching, and creative visualization of jewelry and metal designs using Adobe Photoshop."
         >
           <GalleryGrid prefix="Photoshop" icon={Palette} />
         </Section>
@@ -798,7 +802,7 @@ function Portfolio() {
         <div className="mx-auto max-w-6xl px-6 py-8 text-center">
           <hr className="gold-divider mx-auto mb-6" />
           <p className="text-sm text-muted-foreground">
-            © 2025 Dalia Wael — Jewelry &amp; Metal Design Portfolio
+            © 2026 Dalia Wael — Jewelry &amp; Metal Design Portfolio
           </p>
         </div>
       </footer>
