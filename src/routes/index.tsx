@@ -366,7 +366,7 @@ function Hero() {
       <div className="absolute inset-0 bg-gradient-to-r from-[color:var(--cream)] via-[color:var(--cream)]/70 to-transparent" />
       <div className="relative mx-auto max-w-6xl px-6 py-20 grid md:grid-cols-2 gap-10 items-center w-full">
         <div className="reveal">
-          <p className="mb-4 text-xs uppercase tracking-[0.4em] text-gold">Portfolio · 2025</p>
+          <p className="mb-4 text-xs uppercase tracking-[0.4em] text-gold">Portfolio · 2026</p>
           <h1 className="font-display text-6xl md:text-7xl lg:text-8xl font-semibold text-gold leading-[0.95]">
             Dalia
             <br />
@@ -374,7 +374,7 @@ function Hero() {
           </h1>
           <hr className="gold-divider my-8" />
           <p className="text-lg md:text-xl text-foreground/85 font-medium">
-            Metal Products &amp; Jewelry Designer Student
+            Metal Products &amp; Jewelry Designer
           </p>
           <p className="mt-4 max-w-lg text-base text-muted-foreground leading-relaxed">
             Passionate about continuous learning and professional development in jewelry &amp;
