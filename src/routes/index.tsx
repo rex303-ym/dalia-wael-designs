@@ -758,7 +758,7 @@ function Portfolio() {
           id="photoshop"
           eyebrow="Software"
           title="Photoshop"
-          description="Digital editing, retouching, and creative visualization of jewelry designs using Adobe Photoshop."
+          description="Digital editing, retouching, and creative visualization of jewelry and metal designs using Adobe Photoshop."
         >
           <GalleryGrid prefix="Photoshop" icon={Palette} />
         </Section>
