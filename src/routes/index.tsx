@@ -12,7 +12,7 @@ import {
   MapPin,
   Phone,
   Mail,
-  Linkedin,
+  Facebook,
   Instagram,
   ArrowRight,
   PenTool,
