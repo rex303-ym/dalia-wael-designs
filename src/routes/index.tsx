@@ -802,7 +802,7 @@ function Portfolio() {
         <div className="mx-auto max-w-6xl px-6 py-8 text-center">
           <hr className="gold-divider mx-auto mb-6" />
           <p className="text-sm text-muted-foreground">
-            © 2025 Dalia Wael — Jewelry &amp; Metal Design Portfolio
+            © 2026 Dalia Wael — Jewelry &amp; Metal Design Portfolio
           </p>
         </div>
       </footer>
