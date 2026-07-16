@@ -749,7 +749,7 @@ function Portfolio() {
           id="3dmax"
           eyebrow="Software"
           title="3D Max"
-          description="Photorealistic 3D rendering and visualization of jewelry concepts."
+          description="Photorealistic 3D rendering and visualization of jewelry and metal design concepts."
         >
           <GalleryGrid prefix="3D Max" icon={Layers} />
         </Section>
