@@ -376,9 +376,14 @@ function Navbar() {
       }`}
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-        <a href="#home" className="font-display text-2xl font-semibold tracking-wide text-gold">
-          Dalia&nbsp;Wael
+        <a href="#home" aria-label="Dalia Wael — Home" className="flex items-center">
+          <img
+            src={heroMonogram.url}
+            alt="Dalia Wael"
+            className="h-10 md:h-12 w-auto object-contain"
+          />
         </a>
+
         <ul className="hidden lg:flex items-center gap-7">
           {NAV.map((n) => (
             <li key={n.href}>
