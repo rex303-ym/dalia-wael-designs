@@ -658,10 +658,14 @@ function Contact() {
             Banha, Qalyubia, Egypt
           </ContactLine>
           <ContactLine icon={Phone} label="Phone">
-            <a href="tel:+201018312035" className="hover:text-gold transition-colors">
+            <a href="tel:+201018312035" className="hover:text-gold transition-colors block">
               +20 101 831 2035
             </a>
+            <a href="tel:+201270837125" className="hover:text-gold transition-colors block">
+              +20 12 7083 7125
+            </a>
           </ContactLine>
+
           <ContactLine icon={Mail} label="Email">
             <a
               href="mailto:daliaafifi70@gmail.com"
