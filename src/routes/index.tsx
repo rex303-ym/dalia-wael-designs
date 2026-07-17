@@ -27,14 +27,6 @@ import {
 import heroJewelry from "@/assets/hero-jewelry.jpg";
 import heroMonogram from "@/assets/hero-monogram.png.asset.json";
 import aboutDalia from "@/assets/about-dalia.jpg.asset.json";
-import sw1 from "@/assets/sw-1.jpg.asset.json";
-import sw2 from "@/assets/sw-2.jpg.asset.json";
-import sw3 from "@/assets/sw-3.jpg.asset.json";
-import sw4 from "@/assets/sw-4.jpg.asset.json";
-import sw5 from "@/assets/sw-5.jpg.asset.json";
-import sw6 from "@/assets/sw-6.jpg.asset.json";
-import sw7 from "@/assets/sw-7.jpg.asset.json";
-import sw8 from "@/assets/sw-8.jpg.asset.json";
 
 export const Route = createFileRoute("/")({
   component: Portfolio,
@@ -52,7 +44,17 @@ const NAV = [
   { href: "#contact", label: "Contact" },
 ];
 
-const SOLIDWORKS_IMAGES = [sw1.url, sw2.url, sw3.url, sw4.url, sw5.url, sw6.url, sw7.url, sw8.url];
+const SOLIDWORKS_IMAGES = [
+  "photo_2026-07-16_01-51-01.jpg","photo_2026-07-16_01-51-17.jpg","photo_2026-07-16_01-51-21.jpg",
+  "photo_2026-07-16_01-51-24.jpg","photo_2026-07-16_01-51-27.jpg","photo_2026-07-16_01-51-31.jpg",
+  "photo_2026-07-16_01-51-34.jpg","photo_2026-07-16_01-51-39.jpg","photo_2026-07-16_01-51-43.jpg",
+  "photo_2026-07-16_01-51-47.jpg","photo_2026-07-16_01-51-50.jpg","photo_2026-07-16_01-51-53.jpg",
+  "photo_2026-07-16_01-51-56.jpg","photo_2026-07-16_01-52-00.jpg","photo_2026-07-16_01-52-03.jpg",
+  "photo_2026-07-16_01-52-07.jpg","photo_2026-07-16_01-52-12.jpg","photo_2026-07-16_01-52-16.jpg",
+  "photo_2026-07-16_01-52-19.jpg","photo_2026-07-16_01-52-22.jpg","photo_2026-07-16_01-52-26.jpg",
+  "photo_2026-07-16_01-52-30.jpg",
+].map((f) => `/solid/${f}`);
+
 
 const ARTCAM_IMAGES = [
   "photo_2026-07-16_01-34-36.jpg","photo_2026-07-16_01-34-50.jpg","photo_2026-07-16_01-34-55.jpg",
