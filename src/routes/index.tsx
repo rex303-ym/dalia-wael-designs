@@ -564,20 +564,6 @@ function InfoRow({
 }
 
 function ExploreSection() {
-  const [open, setOpen] = useState<number | null>(null);
-  const images: string[] = []; // no images yet
-  const cards = [
-    {
-      title: "Hand Sketches & Manual Design",
-      desc: "Original pencil sketches, ideation, and manual craftsmanship — the origin of every piece.",
-      icon: PenTool,
-    },
-    {
-      title: "Final Products & Photography",
-      desc: "Finished jewelry pieces captured in professional product photography.",
-      icon: Camera,
-    },
-  ];
   return (
     <Section
       id="gallery"
@@ -585,48 +571,40 @@ function ExploreSection() {
       title="Beyond the Screen"
       description="Where craft meets concept — hand-drawn ideation and the finished, photographed pieces."
     >
-      <div className="grid md:grid-cols-2 gap-8">
-        {cards.map((c, i) => {
-          const Icon = c.icon;
-          const hasImg = Boolean(images[i]);
-          return (
-            <div
-              key={c.title}
-              onClick={hasImg ? () => setOpen(i) : undefined}
-              className={`group relative block overflow-hidden rounded-lg card-gold bg-card hover:[&]:card-gold-hover ${hasImg ? "cursor-zoom-in" : ""}`}
-            >
-              <div className="aspect-[4/3] flex items-center justify-center bg-gradient-to-br from-[color:var(--sand)] to-[color:var(--cream)] border-b border-[color:var(--gold)]/30">
-                {hasImg ? (
-                  <img src={images[i]} alt={c.title} className="h-full w-full object-cover" />
-                ) : (
-                  <div className="flex flex-col items-center gap-2 text-gold/70">
-                    <Icon className="h-10 w-10" strokeWidth={1.2} />
-                    <p className="text-[10px] uppercase tracking-[0.3em]">Add image</p>
-                  </div>
-                )}
-              </div>
-              <div className="p-6 md:p-8">
-                <div className="mb-3 inline-flex h-12 w-12 items-center justify-center rounded-full bg-gradient-gold text-[color:var(--ink)]">
-                  <Icon className="h-5 w-5" strokeWidth={1.5} />
-                </div>
-                <h3 className="font-display text-2xl font-semibold text-foreground group-hover:text-gold transition-colors duration-200">
-                  {c.title}
-                </h3>
-                <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{c.desc}</p>
-              </div>
+      <div className="space-y-16">
+        <div>
+          <div className="mb-6 flex items-center gap-3">
+            <div className="grid h-11 w-11 place-items-center rounded-full bg-gradient-gold text-[color:var(--ink)]">
+              <PenTool className="h-5 w-5" strokeWidth={1.5} />
             </div>
-          );
-        })}
+            <div>
+              <h3 className="font-display text-2xl font-semibold text-foreground">
+                Hand Sketches &amp; Manual Design
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                Original pencil sketches, ideation, and manual craftsmanship.
+              </p>
+            </div>
+          </div>
+          <GalleryGrid prefix="Sketch" icon={PenTool} images={HAND_SKETCHES_IMAGES} />
+        </div>
+        <div>
+          <div className="mb-6 flex items-center gap-3">
+            <div className="grid h-11 w-11 place-items-center rounded-full bg-gradient-gold text-[color:var(--ink)]">
+              <Camera className="h-5 w-5" strokeWidth={1.5} />
+            </div>
+            <div>
+              <h3 className="font-display text-2xl font-semibold text-foreground">
+                Final Products &amp; Photography
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                Finished pieces captured in professional product photography.
+              </p>
+            </div>
+          </div>
+          <GalleryGrid prefix="Product" icon={Camera} images={FINAL_PRODUCTS_IMAGES} />
+        </div>
       </div>
-      {open !== null && images.length > 0 && (
-        <Lightbox
-          images={images}
-          index={open}
-          onClose={() => setOpen(null)}
-          onPrev={() => setOpen((v) => (v === null ? 0 : (v - 1 + images.length) % images.length))}
-          onNext={() => setOpen((v) => (v === null ? 0 : (v + 1) % images.length))}
-        />
-      )}
     </Section>
   );
 }
