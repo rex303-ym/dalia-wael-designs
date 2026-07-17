@@ -807,7 +807,7 @@ function Portfolio() {
           title="Art CAM"
           description="Precision CNC carving and relief designs crafted using Art CAM software."
         >
-          <GalleryGrid prefix="Art CAM" icon={Sparkles} />
+          <GalleryGrid prefix="Art CAM" icon={Sparkles} images={ARTCAM_IMAGES} />
         </Section>
 
         <Section
