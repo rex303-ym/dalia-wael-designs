@@ -834,7 +834,7 @@ function Portfolio() {
           title="Photoshop"
           description="Digital editing, retouching, and creative visualization of jewelry and metal designs using Adobe Photoshop."
         >
-          <GalleryGrid prefix="Photoshop" icon={Palette} />
+          <GalleryGrid prefix="Photoshop" icon={Palette} images={PHOTOSHOP_IMAGES} />
         </Section>
 
         <Section
