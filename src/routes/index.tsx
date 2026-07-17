@@ -843,7 +843,7 @@ function Portfolio() {
           title="Rhino & Rhino Gold"
           description="Specialized jewelry CAD design and gold modeling using Rhino and Rhino Gold."
         >
-          <GalleryGrid prefix="Rhino" icon={Diamond} />
+          <GalleryGrid prefix="Rhino" icon={Diamond} images={RHINO_IMAGES} />
         </Section>
 
         <ExploreSection />
