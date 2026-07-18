@@ -508,7 +508,7 @@ function About() {
         <div className="md:col-span-2 relative">
           <div className="aspect-[4/5] overflow-hidden rounded-lg border-2 border-[color:var(--gold)]/50 shadow-luxe">
             <img
-              src={aboutDalia.url}
+              src={ABOUT_DALIA_URL}
               alt="Dalia Wael"
               loading="lazy"
               className="h-full w-full object-cover"
