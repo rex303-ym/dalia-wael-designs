@@ -380,7 +380,7 @@ function Navbar() {
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         <a href="#home" aria-label="Dalia Wael — Home" className="flex items-center">
           <img
-            src={heroMonogram.url}
+            src={HERO_MONOGRAM_URL}
             alt="Dalia Wael"
             className="h-10 md:h-12 w-auto object-contain"
           />
