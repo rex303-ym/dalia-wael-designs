@@ -330,22 +330,6 @@ function EmptySlot({ label, icon: Icon }: { label: string; icon: typeof Gem }) {
   );
 }
 
-function ImageCard({ src, alt, onClick }: { src: string; alt: string; onClick: () => void }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className="group relative aspect-square overflow-hidden rounded-lg card-gold bg-card hover:[&]:card-gold-hover cursor-zoom-in"
-    >
-      <img
-        src={src}
-        alt={alt}
-        loading="lazy"
-        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-      />
-    </button>
-  );
-}
 
 function GalleryGrid({
   prefix,
