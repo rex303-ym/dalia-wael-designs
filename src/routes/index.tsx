@@ -145,7 +145,7 @@ function useReveal<T extends HTMLElement>() {
           io.disconnect();
         }
       },
-      { threshold: 0.12 },
+      { threshold: 0, rootMargin: "0px 0px -10% 0px" },
     );
     io.observe(el);
     return () => io.disconnect();
@@ -336,18 +336,24 @@ function GalleryGrid({
   icon,
   images = [],
   slots = 6,
+  initialCount = 12,
+  step = 12,
 }: {
   prefix: string;
   icon: typeof Gem;
   images?: string[];
   slots?: number;
+  initialCount?: number;
+  step?: number;
 }) {
   const [open, setOpen] = useState<number | null>(null);
+  const [visible, setVisible] = useState(initialCount);
   const total = images.length > 0 ? images.length : slots;
+  const shown = Math.min(total, visible);
   return (
     <>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {Array.from({ length: total }).map((_, i) =>
+        {Array.from({ length: shown }).map((_, i) =>
           images[i] ? (
             <ImageCard
               key={i}
@@ -360,6 +366,17 @@ function GalleryGrid({
           ),
         )}
       </div>
+      {shown < total && (
+        <div className="mt-10 flex justify-center">
+          <button
+            type="button"
+            onClick={() => setVisible((v) => v + step)}
+            className="px-8 py-3 rounded-full border border-[color:var(--gold)] text-gold text-sm uppercase tracking-[0.3em] hover:bg-[color:var(--gold)]/10 transition-colors"
+          >
+            Load more ({total - shown})
+          </button>
+        </div>
+      )}
       {open !== null && images.length > 0 && (
         <Lightbox
           images={images}
@@ -368,6 +385,7 @@ function GalleryGrid({
           onPrev={() => setOpen((v) => (v === null ? 0 : (v - 1 + images.length) % images.length))}
           onNext={() => setOpen((v) => (v === null ? 0 : (v + 1) % images.length))}
         />
+
       )}
     </>
   );
