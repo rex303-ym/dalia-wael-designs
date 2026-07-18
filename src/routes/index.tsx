@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 import {
   Gem,
   Sparkles,
@@ -25,8 +26,9 @@ import {
   ChevronRight,
 } from "lucide-react";
 import heroJewelry from "@/assets/hero-jewelry.jpg";
-import heroMonogram from "@/assets/hero-monogram.png.asset.json";
-import aboutDalia from "@/assets/about-dalia.jpg.asset.json";
+
+const HERO_MONOGRAM_URL = "/logo/hero-monogram.png";
+const ABOUT_DALIA_URL = "/about/about-dalia.jpg";
 
 export const Route = createFileRoute("/")({
   component: Portfolio,
