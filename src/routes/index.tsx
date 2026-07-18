@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 import {
   Gem,
   Sparkles,
@@ -25,8 +26,9 @@ import {
   ChevronRight,
 } from "lucide-react";
 import heroJewelry from "@/assets/hero-jewelry.jpg";
-import heroMonogram from "@/assets/hero-monogram.png.asset.json";
-import aboutDalia from "@/assets/about-dalia.jpg.asset.json";
+
+const HERO_MONOGRAM_URL = "/logo/hero-monogram.png";
+const ABOUT_DALIA_URL = "/about/about-dalia.jpg";
 
 export const Route = createFileRoute("/")({
   component: Portfolio,
@@ -181,7 +183,7 @@ function Lightbox({
     };
   }, [onClose, onPrev, onNext]);
 
-  return (
+  const node = (
     <div
       role="dialog"
       aria-modal="true"
@@ -244,6 +246,35 @@ function Lightbox({
       />
     </div>
   );
+  if (typeof document === "undefined") return null;
+  return createPortal(node, document.body);
+}
+
+function ImageCard({ src, alt, onClick }: { src: string; alt: string; onClick: () => void }) {
+  const [loaded, setLoaded] = useState(false);
+  const [errored, setErrored] = useState(false);
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="group relative aspect-square overflow-hidden rounded-lg card-gold bg-card hover:[&]:card-gold-hover cursor-zoom-in"
+    >
+      {!loaded && !errored && (
+        <div className="absolute inset-0 animate-pulse bg-gradient-to-br from-[color:var(--sand)] to-[color:var(--cream)] flex items-center justify-center">
+          <div className="h-8 w-8 rounded-full border-2 border-[color:var(--gold)]/30 border-t-[color:var(--gold)] animate-spin" />
+        </div>
+      )}
+      <img
+        src={src}
+        alt={alt}
+        loading="lazy"
+        decoding="async"
+        onLoad={() => setLoaded(true)}
+        onError={() => setErrored(true)}
+        className={`h-full w-full object-cover transition-all duration-500 group-hover:scale-[1.03] ${loaded ? "opacity-100" : "opacity-0"}`}
+      />
+    </button>
+  );
 }
 
 function Section({
@@ -299,22 +330,6 @@ function EmptySlot({ label, icon: Icon }: { label: string; icon: typeof Gem }) {
   );
 }
 
-function ImageCard({ src, alt, onClick }: { src: string; alt: string; onClick: () => void }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className="group relative aspect-square overflow-hidden rounded-lg card-gold bg-card hover:[&]:card-gold-hover cursor-zoom-in"
-    >
-      <img
-        src={src}
-        alt={alt}
-        loading="lazy"
-        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-      />
-    </button>
-  );
-}
 
 function GalleryGrid({
   prefix,
@@ -378,7 +393,7 @@ function Navbar() {
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         <a href="#home" aria-label="Dalia Wael — Home" className="flex items-center">
           <img
-            src={heroMonogram.url}
+            src={HERO_MONOGRAM_URL}
             alt="Dalia Wael"
             className="h-10 md:h-12 w-auto object-contain"
           />
@@ -437,7 +452,7 @@ function Hero() {
     >
       <div className="absolute inset-0 opacity-25">
         <img
-          src={heroMonogram.url}
+          src={HERO_MONOGRAM_URL}
           alt=""
           className="h-full w-full object-cover"
           width={1920}
@@ -506,7 +521,7 @@ function About() {
         <div className="md:col-span-2 relative">
           <div className="aspect-[4/5] overflow-hidden rounded-lg border-2 border-[color:var(--gold)]/50 shadow-luxe">
             <img
-              src={aboutDalia.url}
+              src={ABOUT_DALIA_URL}
               alt="Dalia Wael"
               loading="lazy"
               className="h-full w-full object-cover"
