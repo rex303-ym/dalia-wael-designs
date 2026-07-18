@@ -439,7 +439,7 @@ function Hero() {
     >
       <div className="absolute inset-0 opacity-25">
         <img
-          src={heroMonogram.url}
+          src={HERO_MONOGRAM_URL}
           alt=""
           className="h-full w-full object-cover"
           width={1920}
