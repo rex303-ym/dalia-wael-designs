@@ -183,7 +183,7 @@ function Lightbox({
     };
   }, [onClose, onPrev, onNext]);
 
-  return (
+  const node = (
     <div
       role="dialog"
       aria-modal="true"
@@ -245,6 +245,35 @@ function Lightbox({
         className="max-h-[88vh] max-w-[92vw] object-contain rounded-md shadow-luxe animate-[lb-zoom_200ms_ease-out]"
       />
     </div>
+  );
+  if (typeof document === "undefined") return null;
+  return createPortal(node, document.body);
+}
+
+function ImageCard({ src, alt, onClick }: { src: string; alt: string; onClick: () => void }) {
+  const [loaded, setLoaded] = useState(false);
+  const [errored, setErrored] = useState(false);
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="group relative aspect-square overflow-hidden rounded-lg card-gold bg-card hover:[&]:card-gold-hover cursor-zoom-in"
+    >
+      {!loaded && !errored && (
+        <div className="absolute inset-0 animate-pulse bg-gradient-to-br from-[color:var(--sand)] to-[color:var(--cream)] flex items-center justify-center">
+          <div className="h-8 w-8 rounded-full border-2 border-[color:var(--gold)]/30 border-t-[color:var(--gold)] animate-spin" />
+        </div>
+      )}
+      <img
+        src={src}
+        alt={alt}
+        loading="lazy"
+        decoding="async"
+        onLoad={() => setLoaded(true)}
+        onError={() => setErrored(true)}
+        className={`h-full w-full object-cover transition-all duration-500 group-hover:scale-[1.03] ${loaded ? "opacity-100" : "opacity-0"}`}
+      />
+    </button>
   );
 }
 
