@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import {
   Gem,
@@ -26,6 +26,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import heroJewelry from "@/assets/hero-jewelry.jpg";
+import { supabase } from "@/integrations/supabase/client";
 
 const HERO_MONOGRAM_URL = "/logo/hero-monogram.png";
 const ABOUT_DALIA_URL = "/about/about-dalia.jpg";
@@ -46,91 +47,58 @@ const NAV = [
   { href: "#contact", label: "Contact" },
 ];
 
-const SOLIDWORKS_IMAGES = [
-  "photo_2026-07-16_01-51-01.jpg","photo_2026-07-16_01-51-17.jpg","photo_2026-07-16_01-51-21.jpg",
-  "photo_2026-07-16_01-51-24.jpg","photo_2026-07-16_01-51-27.jpg","photo_2026-07-16_01-51-31.jpg",
-  "photo_2026-07-16_01-51-34.jpg","photo_2026-07-16_01-51-39.jpg","photo_2026-07-16_01-51-43.jpg",
-  "photo_2026-07-16_01-51-47.jpg","photo_2026-07-16_01-51-50.jpg","photo_2026-07-16_01-51-53.jpg",
-  "photo_2026-07-16_01-51-56.jpg","photo_2026-07-16_01-52-00.jpg","photo_2026-07-16_01-52-03.jpg",
-  "photo_2026-07-16_01-52-07.jpg","photo_2026-07-16_01-52-12.jpg","photo_2026-07-16_01-52-16.jpg",
-  "photo_2026-07-16_01-52-19.jpg","photo_2026-07-16_01-52-22.jpg","photo_2026-07-16_01-52-26.jpg",
-  "photo_2026-07-16_01-52-30.jpg",
-].map((f) => `/solid/${f}`);
+type SectionKey =
+  | "artcam"
+  | "solidworks"
+  | "3dmax"
+  | "photoshop"
+  | "rhino"
+  | "handmade_sketch"
+  | "handmade_final";
 
+type GalleryMap = Record<SectionKey, string[]>;
 
-const ARTCAM_IMAGES = [
-  "photo_2026-07-16_01-34-36.jpg","photo_2026-07-16_01-34-50.jpg","photo_2026-07-16_01-34-55.jpg",
-  "photo_2026-07-16_01-35-01.jpg","photo_2026-07-16_01-35-07.jpg","photo_2026-07-16_01-35-12.jpg",
-  "photo_2026-07-16_01-35-25.jpg","photo_2026-07-16_01-35-32.jpg","photo_2026-07-16_01-35-36.jpg",
-  "photo_2026-07-16_01-35-43.jpg","photo_2026-07-16_01-35-48.jpg","photo_2026-07-16_01-35-56.jpg",
-  "photo_2026-07-16_01-36-08.jpg","photo_2026-07-16_01-36-13.jpg","photo_2026-07-16_01-36-18.jpg",
-  "photo_2026-07-16_01-36-21.jpg","photo_2026-07-16_01-36-28.jpg","photo_2026-07-16_01-36-33.jpg",
-  "photo_2026-07-16_01-36-39.jpg","photo_2026-07-16_01-36-45.jpg","photo_2026-07-16_01-36-50.jpg",
-  "photo_2026-07-16_01-36-55.jpg","photo_2026-07-16_01-37-02.jpg","photo_2026-07-16_01-37-07.jpg",
-  "photo_2026-07-16_01-37-15.jpg","photo_2026-07-16_01-37-29.jpg","photo_2026-07-16_01-37-35.jpg",
-  "photo_2026-07-16_01-37-42.jpg","photo_2026-07-16_01-37-47.jpg","photo_2026-07-16_01-37-53.jpg",
-  "photo_2026-07-16_01-37-58.jpg","photo_2026-07-16_01-38-01.jpg","photo_2026-07-16_01-38-06.jpg",
-  "photo_2026-07-16_01-38-11.jpg","photo_2026-07-16_01-38-20.jpg","photo_2026-07-16_01-38-26.jpg",
-  "photo_2026-07-16_01-38-32.jpg","photo_2026-07-16_01-38-38.jpg","photo_2026-07-16_01-38-42.jpg",
-  "photo_2026-07-16_01-38-47.jpg","photo_2026-07-16_01-38-53.jpg","photo_2026-07-16_01-38-57.jpg",
-  "photo_2026-07-16_01-39-02.jpg","photo_2026-07-16_01-39-07.jpg","photo_2026-07-16_01-39-15.jpg",
-  "photo_2026-07-16_01-39-29.jpg","photo_2026-07-16_01-39-35.jpg","photo_2026-07-16_01-39-40.jpg",
-  "photo_2026-07-16_01-39-45.jpg","photo_2026-07-16_01-39-51.jpg","photo_2026-07-16_01-39-55.jpg",
-  "photo_2026-07-16_01-40-04.jpg","photo_2026-07-16_01-40-09.jpg","photo_2026-07-16_01-40-12.jpg",
-  "photo_2026-07-16_01-40-31.jpg","photo_2026-07-16_01-40-35.jpg","photo_2026-07-16_01-40-40.jpg",
-  "photo_2026-07-16_01-40-48.jpg","photo_2026-07-16_01-40-53.jpg",
-].map((f) => `/artcam/${f}`);
+const EMPTY_GALLERY: GalleryMap = {
+  artcam: [],
+  solidworks: [],
+  "3dmax": [],
+  photoshop: [],
+  rhino: [],
+  handmade_sketch: [],
+  handmade_final: [],
+};
 
-const THREEDMAX_IMAGES = [
-  "2156.JPG","52146.JPG","545152.JPG","654225.JPG","6588.JPG","897.JPG","999.JPG",
-  "Screenshot 2025-05-12 182503.png","gfds.JPG",
-  "untitled.1.jpg","untitled.38.jpg","untitled.44.jpg","untitled.46.jpg",
-  "untitled.59.jpg","untitled.61.jpg",
-  "بيئيسس.JPG","رندر شكل هندسي.62.jpg","رندر شمس.67.jpg","رندر طاووس بجد.63.jpg",
-  "رندر قنديل.62.jpg","عنكبوت.68.jpg","نتلؤ.JPG","يلسبي.JPG",
-].map((f) => `/3dmax/${encodeURIComponent(f)}`);
-
-const PHOTOSHOP_IMAGES = [
-  "photo_2026-07-16_01-14-58.jpg","photo_2026-07-16_01-15-15.jpg","photo_2026-07-16_01-15-22.jpg",
-  "photo_2026-07-16_01-15-26.jpg","photo_2026-07-16_01-15-40.jpg","photo_2026-07-16_01-15-46.jpg",
-  "photo_2026-07-16_01-15-53.jpg","photo_2026-07-16_01-15-59.jpg","photo_2026-07-16_01-16-04.jpg",
-  "photo_2026-07-16_01-16-11.jpg","photo_2026-07-16_01-16-18.jpg","photo_2026-07-16_01-16-26.jpg",
-  "photo_2026-07-16_01-16-34.jpg","photo_2026-07-16_01-16-48.jpg","photo_2026-07-16_01-16-55.jpg",
-  "photo_2026-07-16_01-17-01.jpg","photo_2026-07-16_01-17-07.jpg","photo_2026-07-16_01-17-13.jpg",
-  "photo_2026-07-16_01-17-17.jpg","photo_2026-07-16_01-17-21.jpg","photo_2026-07-16_01-17-27.jpg",
-  "photo_2026-07-16_01-17-34.jpg","photo_2026-07-16_01-17-41.jpg","photo_2026-07-16_01-17-47.jpg",
-  "photo_2026-07-16_01-17-52.jpg","photo_2026-07-16_01-17-58.jpg","photo_2026-07-16_01-18-02.jpg",
-  "photo_2026-07-16_01-18-09.jpg","photo_2026-07-16_01-18-48.jpg","photo_2026-07-16_01-18-53.jpg",
-].map((f) => `/photoshop/${f}`);
-
-const RHINO_IMAGES = [
-  "photo_2026-07-16_00-36-08.jpg","photo_2026-07-16_01-10-02.jpg","photo_2026-07-16_01-10-18.jpg",
-  "photo_2026-07-16_01-10-27.jpg","photo_2026-07-16_01-10-32.jpg","photo_2026-07-16_01-10-41.jpg",
-  "photo_2026-07-16_01-10-47.jpg","photo_2026-07-16_01-11-01.jpg","photo_2026-07-16_01-11-06.jpg",
-  "photo_2026-07-16_01-11-12.jpg","photo_2026-07-16_01-11-17.jpg","photo_2026-07-16_01-11-22.jpg",
-  "photo_2026-07-16_01-11-28.jpg","photo_2026-07-16_01-11-33.jpg","photo_2026-07-16_01-11-38.jpg",
-  "photo_2026-07-16_01-11-43.jpg","photo_2026-07-16_01-11-48.jpg","photo_2026-07-16_01-11-54.jpg",
-  "photo_2026-07-16_01-12-00.jpg","photo_2026-07-16_01-12-06.jpg","photo_2026-07-16_01-12-11.jpg",
-  "photo_2026-07-16_01-12-16.jpg","photo_2026-07-16_01-12-22.jpg","photo_2026-07-16_01-12-28.jpg",
-  "photo_2026-07-16_01-12-34.jpg","photo_2026-07-16_01-12-42.jpg","photo_2026-07-16_01-12-47.jpg",
-  "photo_2026-07-16_01-12-53.jpg","photo_2026-07-16_01-12-57.jpg","photo_2026-07-16_01-13-02.jpg",
-  "photo_2026-07-16_01-13-07.jpg","photo_2026-07-16_01-13-13.jpg","photo_2026-07-16_01-13-19.jpg",
-  "photo_2026-07-16_01-14-18.jpg","photo_2026-07-16_01-14-25.jpg",
-].map((f) => `/rhino/${f}`);
-
-const HANDMADE_IMAGES = [
-  "photo_2026-07-15_18-37-11.jpg","photo_2026-07-15_18-37-23.jpg","photo_2026-07-15_18-37-44.jpg",
-  "photo_2026-07-15_18-37-57.jpg","photo_2026-07-15_18-38-06.jpg","photo_2026-07-15_18-38-19.jpg",
-  "photo_2026-07-15_18-38-29.jpg","photo_2026-07-15_18-38-40.jpg","photo_2026-07-15_18-39-01.jpg",
-  "photo_2026-07-15_18-39-10.jpg","photo_2026-07-15_18-41-48.jpg","photo_2026-07-15_18-42-04.jpg",
-  "photo_2026-07-15_18-42-17.jpg","photo_2026-07-15_18-42-21.jpg","photo_2026-07-15_18-42-27.jpg",
-  "photo_2026-07-15_18-42-29.jpg","photo_2026-07-15_18-42-39.jpg","photo_2026-07-15_18-43-04.jpg",
-  "photo_2026-07-16_00-35-12.jpg","photo_2026-07-16_01-02-20.jpg","photo_2026-07-16_01-02-37.jpg",
-  "photo_2026-07-16_01-02-51.jpg",
-].map((f) => `/handmade/${f}`);
-const HANDMADE_HALF = Math.ceil(HANDMADE_IMAGES.length / 2);
-const HAND_SKETCHES_IMAGES = HANDMADE_IMAGES.slice(0, HANDMADE_HALF);
-const FINAL_PRODUCTS_IMAGES = HANDMADE_IMAGES.slice(HANDMADE_HALF);
+function useGalleryImages(): GalleryMap {
+  const [map, setMap] = useState<GalleryMap>(EMPTY_GALLERY);
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const { data, error } = await supabase
+        .from("gallery_images")
+        .select("section, image_url, display_order")
+        .order("display_order", { ascending: true });
+      if (cancelled || error || !data) return;
+      const next: GalleryMap = {
+        artcam: [],
+        solidworks: [],
+        "3dmax": [],
+        photoshop: [],
+        rhino: [],
+        handmade_sketch: [],
+        handmade_final: [],
+      };
+      for (const row of data) {
+        const key = row.section as SectionKey;
+        if (key in next) next[key].push(row.image_url);
+      }
+      setMap(next);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+  return map;
+}
 
 function useReveal<T extends HTMLElement>() {
   const ref = useRef<T | null>(null);
@@ -356,7 +324,7 @@ function GalleryGrid({
         {Array.from({ length: shown }).map((_, i) =>
           images[i] ? (
             <ImageCard
-              key={i}
+              key={`${images[i]}-${i}`}
               src={images[i]}
               alt={`${prefix} · Piece ${i + 1}`}
               onClick={() => setOpen(i)}
@@ -603,7 +571,13 @@ function InfoRow({
   );
 }
 
-function ExploreSection() {
+function ExploreSection({
+  sketches,
+  finals,
+}: {
+  sketches: string[];
+  finals: string[];
+}) {
   return (
     <Section
       id="gallery"
@@ -626,7 +600,7 @@ function ExploreSection() {
               </p>
             </div>
           </div>
-          <GalleryGrid prefix="Sketch" icon={PenTool} images={HAND_SKETCHES_IMAGES} />
+          <GalleryGrid prefix="Sketch" icon={PenTool} images={sketches} />
         </div>
         <div>
           <div className="mb-6 flex items-center gap-3">
@@ -642,7 +616,7 @@ function ExploreSection() {
               </p>
             </div>
           </div>
-          <GalleryGrid prefix="Product" icon={Camera} images={FINAL_PRODUCTS_IMAGES} />
+          <GalleryGrid prefix="Product" icon={Camera} images={finals} />
         </div>
       </div>
     </Section>
@@ -671,7 +645,6 @@ function Contact() {
     const href = `mailto:daliaafifi70@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     const start = Date.now();
     window.location.href = href;
-    // Show fallback if no mail handler took over within ~1.2s
     window.setTimeout(() => {
       if (Date.now() - start < 3000 && document.visibilityState === "visible") {
         setFallback(true);
@@ -816,6 +789,7 @@ function ContactLine({
 }
 
 function Portfolio() {
+  const images = useGalleryImages();
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
@@ -829,7 +803,7 @@ function Portfolio() {
           title="Art CAM"
           description="Precision CNC carving and relief designs crafted using Art CAM software."
         >
-          <GalleryGrid prefix="Art CAM" icon={Sparkles} images={ARTCAM_IMAGES} />
+          <GalleryGrid prefix="Art CAM" icon={Sparkles} images={images.artcam} />
         </Section>
 
         <Section
@@ -838,7 +812,7 @@ function Portfolio() {
           title="SolidWorks"
           description="3D modeling and technical design of metal products and components."
         >
-          <GalleryGrid prefix="SolidWorks" icon={Box} images={SOLIDWORKS_IMAGES} />
+          <GalleryGrid prefix="SolidWorks" icon={Box} images={images.solidworks} />
         </Section>
 
         <Section
@@ -847,7 +821,7 @@ function Portfolio() {
           title="3D Max"
           description="Photorealistic 3D rendering and visualization of jewelry and metal design concepts."
         >
-          <GalleryGrid prefix="3D Max" icon={Layers} images={THREEDMAX_IMAGES} />
+          <GalleryGrid prefix="3D Max" icon={Layers} images={images["3dmax"]} />
         </Section>
 
         <Section
@@ -856,7 +830,7 @@ function Portfolio() {
           title="Photoshop"
           description="Digital editing, retouching, and creative visualization of jewelry and metal designs using Adobe Photoshop."
         >
-          <GalleryGrid prefix="Photoshop" icon={Palette} images={PHOTOSHOP_IMAGES} />
+          <GalleryGrid prefix="Photoshop" icon={Palette} images={images.photoshop} />
         </Section>
 
         <Section
@@ -865,10 +839,10 @@ function Portfolio() {
           title="Rhino & Rhino Gold"
           description="Specialized jewelry CAD design and gold modeling using Rhino and Rhino Gold."
         >
-          <GalleryGrid prefix="Rhino" icon={Diamond} images={RHINO_IMAGES} />
+          <GalleryGrid prefix="Rhino" icon={Diamond} images={images.rhino} />
         </Section>
 
-        <ExploreSection />
+        <ExploreSection sketches={images.handmade_sketch} finals={images.handmade_final} />
 
         <Section
           id="skills"
