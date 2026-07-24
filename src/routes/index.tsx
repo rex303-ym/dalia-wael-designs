@@ -43,6 +43,7 @@ const NAV = [
   { href: "#3dmax", label: "3D Max" },
   { href: "#photoshop", label: "Photoshop" },
   { href: "#rhino", label: "Rhino & Rhino Gold" },
+  { href: "#surface_finishing", label: "Surface Finishing" },
   { href: "#gallery", label: "Gallery" },
   { href: "#contact", label: "Contact" },
 ];
