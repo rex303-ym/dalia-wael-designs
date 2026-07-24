@@ -853,6 +853,15 @@ function Portfolio() {
           <GalleryGrid prefix="Rhino" icon={Diamond} images={images.rhino} />
         </Section>
 
+        <Section
+          id="surface_finishing"
+          eyebrow="Craft"
+          title="Surface Finishing"
+          description="Surface finishing and coating technologies for metallic and non-metallic products, including conductive surface preparation for electroplating, and decorative, protective, and functional coating systems for cookware, lighting fixtures, and jewelry."
+        >
+          <GalleryGrid prefix="Surface Finishing" icon={Sparkles} images={images.surface_finishing} />
+        </Section>
+
         <ExploreSection sketches={images.handmade_sketch} finals={images.handmade_final} />
 
         <Section
