@@ -480,6 +480,13 @@ function Hero() {
             >
               Get in Touch
             </a>
+            <a
+              href="/cv/Dalia_Wael_CV.pdf"
+              download
+              className="inline-flex items-center gap-2 rounded-full border border-[color:var(--gold)] px-8 py-3.5 text-sm font-semibold uppercase tracking-widest text-gold hover:bg-[color:var(--gold)]/10 transition-colors"
+            >
+              Download CV
+            </a>
           </div>
         </div>
         <div className="hidden md:block relative">
