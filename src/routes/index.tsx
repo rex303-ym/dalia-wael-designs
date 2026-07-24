@@ -87,6 +87,7 @@ function useGalleryImages(): GalleryMap {
         "3dmax": [],
         photoshop: [],
         rhino: [],
+        surface_finishing: [],
         handmade_sketch: [],
         handmade_final: [],
       };
