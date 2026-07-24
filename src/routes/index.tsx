@@ -43,6 +43,7 @@ const NAV = [
   { href: "#3dmax", label: "3D Max" },
   { href: "#photoshop", label: "Photoshop" },
   { href: "#rhino", label: "Rhino & Rhino Gold" },
+  { href: "#surface_finishing", label: "Surface Finishing" },
   { href: "#gallery", label: "Gallery" },
   { href: "#contact", label: "Contact" },
 ];
@@ -53,6 +54,7 @@ type SectionKey =
   | "3dmax"
   | "photoshop"
   | "rhino"
+  | "surface_finishing"
   | "handmade_sketch"
   | "handmade_final";
 
@@ -64,6 +66,7 @@ const EMPTY_GALLERY: GalleryMap = {
   "3dmax": [],
   photoshop: [],
   rhino: [],
+  surface_finishing: [],
   handmade_sketch: [],
   handmade_final: [],
 };
@@ -84,6 +87,7 @@ function useGalleryImages(): GalleryMap {
         "3dmax": [],
         photoshop: [],
         rhino: [],
+        surface_finishing: [],
         handmade_sketch: [],
         handmade_final: [],
       };
@@ -476,6 +480,13 @@ function Hero() {
             >
               Get in Touch
             </a>
+            <a
+              href="/cv/Dalia_Wael_CV.pdf"
+              download
+              className="inline-flex items-center gap-2 rounded-full border border-[color:var(--gold)] px-8 py-3.5 text-sm font-semibold uppercase tracking-widest text-gold hover:bg-[color:var(--gold)]/10 transition-colors"
+            >
+              Download CV
+            </a>
           </div>
         </div>
         <div className="hidden md:block relative">
@@ -840,6 +851,15 @@ function Portfolio() {
           description="Specialized jewelry CAD design and gold modeling using Rhino and Rhino Gold."
         >
           <GalleryGrid prefix="Rhino" icon={Diamond} images={images.rhino} />
+        </Section>
+
+        <Section
+          id="surface_finishing"
+          eyebrow="Craft"
+          title="Surface Finishing"
+          description="Surface finishing and coating technologies for metallic and non-metallic products, including conductive surface preparation for electroplating, and decorative, protective, and functional coating systems for cookware, lighting fixtures, and jewelry."
+        >
+          <GalleryGrid prefix="Surface Finishing" icon={Sparkles} images={images.surface_finishing} />
         </Section>
 
         <ExploreSection sketches={images.handmade_sketch} finals={images.handmade_final} />

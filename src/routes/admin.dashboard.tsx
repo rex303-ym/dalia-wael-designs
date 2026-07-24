@@ -20,6 +20,7 @@ type SectionKey =
   | "3dmax"
   | "photoshop"
   | "rhino"
+  | "surface_finishing"
   | "handmade_sketch"
   | "handmade_final";
 
@@ -29,6 +30,7 @@ const SECTIONS: { key: SectionKey; label: string }[] = [
   { key: "3dmax", label: "3D Max" },
   { key: "photoshop", label: "Photoshop" },
   { key: "rhino", label: "Rhino & Rhino Gold" },
+  { key: "surface_finishing", label: "Surface Finishing" },
   { key: "handmade_sketch", label: "Hand Sketches" },
   { key: "handmade_final", label: "Final Products" },
 ];
